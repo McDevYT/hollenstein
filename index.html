@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Hollenstein.xyz</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Hollenstein.xyz minimalist portal" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗻</text></svg>">
+<style>
+:root {
+  --bg: #0f1014;
+  --fg: #e7ecf3;
+  --accent: #6d8dff;
+  --glow: 180 100% 60%;
+  --font-stack: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Inter, Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+.light {
+  --bg: #f5f7fb;
+  --fg: #1a1d24;
+  --accent: #3355ff;
+  --glow: 230 90% 55%;
+}
+html,body {
+  height:100%;
+  margin:0;
+  font-family: var(--font-stack);
+  background: radial-gradient(circle at 50% 60%, #222 0%, var(--bg) 60%);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  overflow:hidden;
+}
+body.theme-alt {
+  animation: pulsebg 8s linear infinite;
+  background:
+    radial-gradient(circle at 50% 50%, hsla(var(--glow)/0.15), transparent 70%),
+    repeating-conic-gradient(from 0deg, #111 0 10deg, #0b0d10 10deg 20deg);
+}
+@keyframes pulsebg {
+  0% { filter:hue-rotate(0deg) brightness(1); }
+  50% { filter:hue-rotate(90deg) brightness(1.1); }
+  100% { filter:hue-rotate(360deg) brightness(1); }
+}
+.center {
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  text-align:center;
+  padding:2rem;
+  gap:1.25rem;
+  mix-blend-mode:normal;
+}
+h1 {
+  font-size: clamp(3rem, 14vw, 10rem);
+  margin:0;
+  letter-spacing: .05em;
+  font-weight:700;
+  position:relative;
+  line-height:0.85;
+  background:linear-gradient(120deg,var(--fg),var(--accent) 40%,var(--fg) 70%);
+  -webkit-background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 0 12px rgba(0,0,0,.55));
+  animation: float 6s ease-in-out infinite;
+  cursor:default;
+  user-select:none;
+}
+h1::after {
+  content:attr(data-shadow);
+  position:absolute;
+  inset:0;
+  color:transparent;
+  background:linear-gradient(90deg, hsla(var(--glow)/0.7), transparent);
+  -webkit-background-clip:text;
+  mix-blend-mode:overlay;
+  animation: sheen 5s linear infinite;
+  pointer-events:none;
+}
+@keyframes sheen {
+  0% { transform:translateX(-20%) skewX(-8deg); opacity:.0; }
+  30% { opacity:.9; }
+  60% { opacity:.0; }
+  100% { transform:translateX(120%) skewX(-8deg); opacity:0; }
+}
+@keyframes float {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(-18px); }
+}
+.subtitle {
+  font-size:clamp(.9rem,1.4vw,1.15rem);
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  opacity:.65;
+  animation: fadeIn 2s ease 0.3s both;
+  font-weight:500;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(8px); }
+  to { opacity:.65; transform:translateY(0); }
+}
+.badge {
+  font-size:.7rem;
+  padding:.35rem .6rem;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:999px;
+  backdrop-filter:blur(6px) saturate(180%);
+  background:rgba(255,255,255,.04);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  opacity:.55;
+  transition:.4s;
+  pointer-events:auto;
+  cursor:pointer;
+}
+.badge:hover { opacity:1; border-color:rgba(255,255,255,.35); }
+#particles {
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+a.portal {
+  position:fixed;
+  bottom:1.2rem;
+  right:1.2rem;
+  font-size:.75rem;
+  letter-spacing:.15em;
+  text-decoration:none;
+  color:var(--accent);
+  background:rgba(255,255,255,.05);
+  padding:.55rem .9rem;
+  border-radius:8px;
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 4px 18px -6px rgba(0,0,0,.5);
+  opacity:0;
+  transform:translateY(10px);
+  transition:.6s;
+  pointer-events:none;
+}
+a.portal.show {
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.glitch-layer {
+  position:absolute;
+  inset:0;
+  mix-blend-mode:screen;
+  opacity:0;
+  animation: glitch 4s steps(2,end) infinite;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,0,120,.15) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(90deg, rgba(0,200,255,.12) 0 3px, transparent 3px 6px);
+}
+@keyframes glitch {
+  0%,92%,100% { opacity:0; transform:translate(0,0); }
+  93% { opacity:.4; transform:translate(6px,-3px); }
+  95% { opacity:.25; transform:translate(-4px,2px); }
+  97% { opacity:.35; transform:translate(3px,1px); }
+}
+h1:hover { animation-play-state:paused; transform:translateY(-4px) scale(1.02); }
+::-webkit-scrollbar { display:none; }
+</style>
+</head>
+<body>
+<canvas id="particles" aria-hidden="true"></canvas>
+<div class="center">
+  <div class="glitch-layer" aria-hidden="true"></div>
+  <h1 id="logo" data-shadow="Hollenstein">Hollenstein</h1>
+  <div class="subtitle">xyz / crafted presence</div>
+  <div class="badge" id="modeToggle" title="Click background to cycle theme">theme</div>
+</div>
+<a class="portal" id="portalLink" href="https://hollenstein.xyz" target="_blank" rel="noopener noreferrer">ENTER PORTAL</a>
+
+<script>
+/* Particle field */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let w,h,particles=[];
+const DPR = window.devicePixelRatio||1;
+function resize(){
+  w=canvas.width=innerWidth*DPR;
+  h=canvas.height=innerHeight*DPR;
+  canvas.style.width=innerWidth+'px';
+  canvas.style.height=innerHeight+'px';
+  particles = Array.from({length: Math.min(120, Math.floor((w*h)/(16000*DPR)))}, () => ({
+    x: Math.random()*w,
+    y: Math.random()*h,
+    r: Math.random()*2 + .4,
+    vx: (Math.random()-.5)*.08,
+    vy: (Math.random()-.5)*.08,
+    a: Math.random()*360
+  }));
+}
+window.addEventListener('resize', resize);
+resize();
+function tick(){
+  ctx.clearRect(0,0,w,h);
+  ctx.globalCompositeOperation='lighter';
+  particles.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy; p.a+=0.3;
+    if(p.x<0) p.x+=w; if(p.x>w) p.x-=w;
+    if(p.y<0) p.y+=h; if(p.y>h) p.y-=h;
+    const grad=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);
+    grad.addColorStop(0,`hsla(${(p.a)%360} 100% 65% / .55)`);
+    grad.addColorStop(1,'transparent');
+    ctx.fillStyle=grad;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(tick);
+}
+tick();
+
+/* Theme cycling */
+const themes = ['', 'light', 'theme-alt'];
+let themeIndex = 0;
+function cycleTheme(){
+  themeIndex = (themeIndex+1)%themes.length;
+  document.body.className = themes[themeIndex];
+  localStorage.setItem('h_theme', themeIndex);
+}
+document.addEventListener('click', e=>{
+  if(e.target.id==='modeToggle') { cycleTheme(); }
+  else if(e.target===document.body) { cycleTheme(); }
+});
+const saved = +localStorage.getItem('h_theme');
+if(!isNaN(saved)) {
+  themeIndex = saved;
+  document.body.className = themes[themeIndex];
+}
+
+/* Web Vibes ASCII */
+console.log('%cHollenstein.xyz','background:#111;color:#6d8dff;padding:8px 14px;font-size:14px;border-radius:6px');
+
+/* Easter Egg: Konami code -> rainbow mode */
+const konamiSeq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let buffer=[];
+function activateKonami(){
+  document.body.classList.add('theme-alt');
+  themeIndex = themes.indexOf('theme-alt');
+  const logo = document.getElementById('logo');
+  logo.style.transition='filter 1.2s';
+  logo.style.filter='hue-rotate(360deg) brightness(1.25) drop-shadow(0 0 18px rgba(255,255,255,.35))';
+  setTimeout(()=>logo.style.filter='', 1600);
+  toast('✨ RAINBOW PROTOCOL');
+}
+document.addEventListener('keydown', e=>{
+  buffer.push(e.key);
+  if(buffer.slice(-konamiSeq.length).join(',') === konamiSeq.join(',')) {
+    activateKonami();
+    buffer=[];
+  }
+  if(e.key.toLowerCase()==='m') beepMorse('... --- ...');
+});
+/* Easter Egg: typing xyz reveals portal link */
+let xyzBuffer='';
+document.addEventListener('keypress', e=>{
+  xyzBuffer = (xyzBuffer + e.key.toLowerCase()).slice(-3);
+  if(xyzBuffer==='xyz'){
+    document.getElementById('portalLink').classList.add('show');
+    toast('🌀 Portal unlocked');
+  }
+});
+
+/* Tiny toast */
+let toastDiv;
+function toast(msg){
+  if(!toastDiv){
+    toastDiv = document.createElement('div');
+    Object.assign(toastDiv.style,{
+      position:'fixed', top:'1.2rem', left:'50%', transform:'translateX(-50%)',
+      background:'rgba(0,0,0,.55)', color:'#fff', font:'500 12px/1.2 var(--font-stack)',
+      padding:'8px 14px', borderRadius:'24px', letterSpacing:'.08em',
+      backdropFilter:'blur(8px)', border:'1px solid rgba(255,255,255,.15)',
+      zIndex:50, opacity:0, transition:'opacity .4s, transform .4s'
+    });
+    document.body.appendChild(toastDiv);
+  }
+  toastDiv.textContent=msg;
+  requestAnimationFrame(()=>{
+    toastDiv.style.opacity='1';
+    toastDiv.style.transform='translate(-50%,0)';
+  });
+  clearTimeout(toastDiv._t);
+  toastDiv._t = setTimeout(()=>{
+    toastDiv.style.opacity='0';
+    toastDiv.style.transform='translate(-50%,-8px)';
+  }, 3000);
+}
+
+/* Subtle wobble on pointer movement over logo */
+const logo = document.getElementById('logo');
+logo.addEventListener('mousemove', e=>{
+  const rect = logo.getBoundingClientRect();
+  const x = (e.clientX - rect.left)/rect.width - .5;
+  const y = (e.clientY - rect.top)/rect.height - .5;
+  logo.style.transform=`perspective(800px) rotateX(${y*12}deg) rotateY(${x*-12}deg) scale(1.03)`;
+});
+logo.addEventListener('mouseleave', ()=>logo.style.transform='');
+
+/* Morse beep for M key */
+function beepMorse(pattern){
+  try {
+    const ctxA = new (window.AudioContext||window.webkitAudioContext)();
+    let t = ctxA.currentTime;
+    pattern.split('').forEach(ch=>{
+      if(ch==='.'||ch==='-'){
+        const dur = ch==='.' ? 0.08 : 0.24;
+        const osc = ctxA.createOscillator();
+        const gain = ctxA.createGain();
+        osc.frequency.value=440;
+        osc.type='sine';
+        osc.connect(gain); gain.connect(ctxA.destination);
+        gain.gain.setValueAtTime(.0001, t);
+        gain.gain.exponentialRampToValueAtTime(.4, t+.005);
+        gain.gain.exponentialRampToValueAtTime(.0001, t+dur);
+        osc.start(t);
+        osc.stop(t+dur+.02);
+        t += dur + 0.08;
+      } else if(ch===' ') {
+        t += 0.16;
+      }
+    });
+  } catch(e){}
+}
+
+/* Accessibility: allow tab focus for portal if revealed */
+document.addEventListener('keydown', e=>{
+  if(e.key==='Tab') document.body.style.outline='none';
+});
+
+/* Idle shimmer: periodic subtle random letter flicker */
+setInterval(()=>{
+  const letters = logo.textContent.split('');
+  const i = Math.floor(Math.random()*letters.length);
+  const spanLetters = letters.map((l,idx)=> idx===i ? `<span style="filter:brightness(2) drop-shadow(0 0 6px #fff);">${l}</span>` : l);
+  logo.innerHTML = spanLetters.join('');
+  setTimeout(()=> logo.textContent='Hollenstein', 160);
+}, 2500);
+</script>
+</body>
+</html>
